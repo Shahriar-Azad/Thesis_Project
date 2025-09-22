@@ -225,4 +225,108 @@
             }
         }
 
- 
+        function showLoading() {
+            document.querySelector('.question-container').style.display = 'none';
+            document.querySelector('.loading').style.display = 'block';
+        }
+
+        function calculateResult() {
+            // Logic to determine which law applies based on answers
+            let applicableLaws = [];
+
+            // Law 1: Product labeling issues
+            if (answers.labelingAwareness === 'No' || answers.checkExpiry === 'No') {
+                applicableLaws.push(1);
+            }
+
+            // Law 2: Price list display
+            if (answers.priceListDisplayed === 'No') {
+                applicableLaws.push(2);
+            }
+
+            // Law 4: Overcharging
+            if (answers.overcharged === 'Yes') {
+                applicableLaws.push(4);
+            }
+
+            // Law 5: Adulterated goods
+            if (answers.soldFakeProducts === 'Yes') {
+                applicableLaws.push(5);
+            }
+
+            // Law 8: False advertising
+            if (answers.falseAdvertising === 'Yes') {
+                applicableLaws.push(8);
+            }
+
+            // Law 10: Weight deception
+            if (answers.weightDeceptionLaw === 'No') {
+                applicableLaws.push(10);
+            }
+
+            // Law 13: Fake goods
+            if (answers.soldFakeProducts === 'Yes') {
+                applicableLaws.push(13);
+            }
+
+            // Law 14: Expired products
+            if (answers.expiredProductAction === 'Nothing, it\'s a minor issue' || answers.expiredProductAction === 'Don\'t know') {
+                applicableLaws.push(14);
+            }
+
+            // Law 17: False accusations
+            if (answers.mistreated === 'Yes') {
+                applicableLaws.push(17);
+            }
+
+            // Remove duplicates and default to most relevant laws if none selected
+            applicableLaws = [...new Set(applicableLaws)];
+            
+            if (applicableLaws.length === 0) {
+                // Default laws based on common consumer issues
+                if (answers.overcharged === 'Yes' || answers.complainedFraud !== 'No, never') {
+                    applicableLaws = [1, 2, 4];
+                } else {
+                    applicableLaws = [1, 8];
+                }
+            }
+
+            return applicableLaws;
+        }
+
+        function showResult() {
+            document.querySelector('.loading').style.display = 'none';
+            document.querySelector('.result-container').style.display = 'block';
+            document.querySelector('.result-container').classList.add('fade-in');
+
+            const applicableLaws = calculateResult();
+            const resultContainer = document.getElementById('lawResult');
+            resultContainer.innerHTML = '';
+
+            applicableLaws.forEach(lawNumber => {
+                const law = laws[lawNumber];
+                if (law) {
+                    const lawBox = document.createElement('div');
+                    lawBox.className = 'law-box';
+                    lawBox.innerHTML = `
+                        <div class="law-title">Law ${lawNumber}: ${law.title}</div>
+                        <div class="law-content">${law.content}</div>
+                    `;
+                    resultContainer.appendChild(lawBox);
+                }
+            });
+
+            if (applicableLaws.length === 0) {
+                resultContainer.innerHTML = '<div class="law-box"><div class="law-title">General Consumer Awareness</div><div class="law-content">Based on your responses, you seem to have good awareness of consumer rights. Continue to stay informed about your legal protections.</div></div>';
+            }
+        }
+
+        function restart() {
+            currentQuestion = 0;
+            answers = {};
+            selectedOption = null;
+            
+            document.querySelector('.result-container').style.display = 'none';
+            document.querySelector('.start-screen').style.display = 'block';
+            document.getElementById('progress').style.width = '0%';
+        }
