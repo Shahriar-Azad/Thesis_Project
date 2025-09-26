@@ -15,6 +15,7 @@
 
         .consumer{
             width: 100%;
+            object-fit: cover;
         }
 
         .background-elements {
@@ -509,6 +510,7 @@
         }
 
         @media (max-width: 768px) {
+            .consumer{height: 100%;}
             .header h1 { font-size: 2rem; }
             .content { padding: 30px; }
             .question { font-size: 1.3rem; }
