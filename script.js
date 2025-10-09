@@ -1,5 +1,6 @@
 let selectedLanguage = 'english';
 
+
 const translations = {
     english: {
         headerTitle: "Legal Rights Advisor",
@@ -390,6 +391,20 @@ async function showFinalResult() {
 
     const t = translations[selectedLanguage];
 
+    // ✅ Show a better loading state in the result container
+    const resultContainer = document.getElementById('lawResult');
+    resultContainer.innerHTML = `
+        <div class="law-box" style="text-align: center; padding: 40px;">
+            <div class="loading-spinner"></div>
+            <div style="margin-top: 20px; font-size: 18px; color: #2c3e50;">
+                ${selectedLanguage === 'english' ? 'Analyzing your responses...' : 'আপনার প্রতিক্রিয়া বিশ্লেষণ করা হচ্ছে...'}
+            </div>
+            <div style="margin-top: 10px; font-size: 14px; color: #7f8c8d;">
+                ${selectedLanguage === 'english' ? 'This may take a moment...' : 'এটি কিছুক্ষণ সময় নিতে পারে...'}
+            </div>
+        </div>
+    `;
+
     // ✅ Normalize answers to English for API
     const normalizedAnswers = {};
     Object.keys(answers).forEach(key => {
@@ -408,26 +423,45 @@ async function showFinalResult() {
     const payload = { answers: normalizedAnswers };
 
     try {
-        // Call FastAPI backend
+        // Call FastAPI backend with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout
+
         const response = await fetch("https://consumer-rights.onrender.com/predict", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(payload),
+            signal: controller.signal
         });
 
-        const data = await response.json();
-        const finalLaw = data.predicted_law;  // returned from FastAPI
+        clearTimeout(timeoutId);
 
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        // Check if there's an error in the response
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        const finalLaw = data.predicted_law;
+
+        // ✅ Update UI elements
         document.getElementById('resultTitle').textContent = t.resultTitle;
         document.getElementById('restartBtn').style.display = 'inline-block';
 
-        const resultContainer = document.getElementById('lawResult');
+        // ✅ Clear loading state and show results
         resultContainer.innerHTML = '';
 
         const law = laws[selectedLanguage][finalLaw];
+        
         if (law) {
             const lawBox = document.createElement('div');
             lawBox.className = 'law-box';
+            lawBox.style.animation = 'fadeIn 0.5s ease-in';
             lawBox.innerHTML = `
                 <div class="law-number">${t.primaryLaw} ${finalLaw}</div>
                 <div class="law-title">${law.title}</div>
@@ -435,29 +469,87 @@ async function showFinalResult() {
             `;
             resultContainer.appendChild(lawBox);
 
-            // Add recommendation section
-            const recommendationBox = document.createElement('div');
-            recommendationBox.className = 'law-box';
-            recommendationBox.style.borderLeft = '6px solid #27ae60';
-            recommendationBox.innerHTML = `
-                <div class="law-number" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">${t.recommendation}</div>
-                <div class="law-title">${t.nextSteps}</div>
-                <div class="law-content">${t.recommendationText.replace('this law', selectedLanguage === 'english' ? `Law ${finalLaw}` : `আইন ${finalLaw}`)}</div>
+            // Add recommendation section with slight delay for better UX
+            setTimeout(() => {
+                const recommendationBox = document.createElement('div');
+                recommendationBox.className = 'law-box';
+                recommendationBox.style.borderLeft = '6px solid #27ae60';
+                recommendationBox.style.animation = 'fadeIn 0.5s ease-in';
+                recommendationBox.innerHTML = `
+                    <div class="law-number" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">${t.recommendation}</div>
+                    <div class="law-title">${t.nextSteps}</div>
+                    <div class="law-content">${t.recommendationText.replace('this law', selectedLanguage === 'english' ? `Law ${finalLaw}` : `আইন ${finalLaw}`)}</div>
+                `;
+                resultContainer.appendChild(recommendationBox);
+            }, 200);
+        } else {
+            // Handle case where law is not found
+            resultContainer.innerHTML = `
+                <div class="law-box" style="border-left: 6px solid orange;">
+                    <div class="law-title">${selectedLanguage === 'english' ? 'Law Not Found' : 'আইন পাওয়া যায়নি'}</div>
+                    <div class="law-content">${selectedLanguage === 'english' ? `The predicted law number (${finalLaw}) was not found in our database.` : `পূর্বাভাসিত আইন নম্বর (${finalLaw}) আমাদের ডাটাবেসে পাওয়া যায়নি।`}</div>
+                </div>
             `;
-            resultContainer.appendChild(recommendationBox);
         }
 
     } catch (error) {
         console.error("Error fetching prediction:", error);
-        document.getElementById('lawResult').innerHTML = `
-            <div class="law-box" style="border-left: 6px solid red;">
-                <div class="law-title">${t.error}</div>
-                <div class="law-content">${t.errorMsg}</div>
+        
+        // Determine error message based on error type
+        let errorMessage = t.errorMsg;
+        if (error.name === 'AbortError') {
+            errorMessage = selectedLanguage === 'english' 
+                ? 'Request timed out. The server is taking too long to respond. Please try again.'
+                : 'অনুরোধের সময় শেষ। সার্ভার প্রতিক্রিয়া জানাতে খুব বেশি সময় নিচ্ছে। আবার চেষ্টা করুন।';
+        } else if (error.message.includes('Failed to fetch')) {
+            errorMessage = selectedLanguage === 'english'
+                ? 'Unable to connect to the server. Please check your internet connection and try again.'
+                : 'সার্ভারের সাথে সংযোগ স্থাপন করা যাচ্ছে না। আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন।';
+        }
+
+        resultContainer.innerHTML = `
+            <div class="law-box" style="border-left: 6px solid #e74c3c;">
+                <div class="law-title" style="color: #e74c3c;">
+                    <i class="fas fa-exclamation-triangle"></i> ${t.error}
+                </div>
+                <div class="law-content">${errorMessage}</div>
+                <div style="margin-top: 20px;">
+                    <button onclick="showFinalResult()" class="btn" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+                        ${selectedLanguage === 'english' ? 'Try Again' : 'আবার চেষ্টা করুন'}
+                    </button>
+                </div>
             </div>
         `;
     }
 }
 
+// ✅ Add a function to ping the server and wake it up early
+async function wakeUpServer() {
+    try {
+        // Ping the server when questions start to wake it up early
+        fetch("https://consumer-rights.onrender.com/", {
+            method: "GET",
+            mode: "no-cors" // Use no-cors to avoid CORS errors on health check
+        }).catch(() => {
+            // Silently fail if health check doesn't work
+            console.log("Server wake-up ping sent");
+        });
+    } catch (error) {
+        // Silently fail
+    }
+}
+
+// ✅ Modify startQuestions to wake up server early
+function startQuestions() {
+    document.querySelector('.start-screen').style.display = 'none';
+    document.querySelector('.question-container').style.display = 'block';
+    document.querySelector('.question-container').classList.add('fade-in');
+    
+    // Wake up the server as soon as questions start
+    wakeUpServer();
+    
+    showQuestion();
+}
 function restart() {
     currentQuestion = 0;
     answers = {};
