@@ -250,6 +250,12 @@ let currentQuestion = 0;
 let answers = {};
 let selectedOption = null;
 
+// Helper function to convert English numbers to Bangla numerals
+function toBanglaNumber(num) {
+    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return String(num).split('').map(digit => banglaDigits[parseInt(digit)]).join('');
+}
+
 function selectLanguage(language) {
     selectedLanguage = language;
     
@@ -285,6 +291,10 @@ function startQuestions() {
     document.querySelector('.start-screen').style.display = 'none';
     document.querySelector('.question-container').style.display = 'block';
     document.querySelector('.question-container').classList.add('fade-in');
+    
+    // Wake up the server as soon as questions start
+    wakeUpServer();
+    
     showQuestion();
 }
 
@@ -296,9 +306,13 @@ function showQuestion() {
     
     const t = translations[selectedLanguage];
     
-    document.getElementById('questionNumber').textContent = selectedLanguage === 'english' ? `Question ${questionNum}` : `প্রশ্ন ${questionNum}`;
+    // Convert numbers to Bangla if language is bangla
+    const displayQuestionNum = selectedLanguage === 'bangla' ? toBanglaNumber(questionNum) : questionNum;
+    const displayTotalQuestions = selectedLanguage === 'bangla' ? toBanglaNumber(totalQuestions) : totalQuestions;
+    
+    document.getElementById('questionNumber').textContent = selectedLanguage === 'english' ? `Question ${questionNum}` : `প্রশ্ন ${displayQuestionNum}`;
     document.getElementById('questionText').textContent = question.text;
-    document.getElementById('progressText').textContent = selectedLanguage === 'english' ? `Question ${questionNum} of ${totalQuestions}` : `প্রশ্ন ${questionNum} এর ${totalQuestions}`;
+    document.getElementById('progressText').textContent = selectedLanguage === 'english' ? `Question ${questionNum} of ${totalQuestions}` : `প্রশ্ন ${displayQuestionNum} এর ${displayTotalQuestions}`;
     
     const optionsContainer = document.getElementById('options');
     optionsContainer.innerHTML = '';
@@ -391,7 +405,7 @@ async function showFinalResult() {
 
     const t = translations[selectedLanguage];
 
-    // ✅ Show a better loading state in the result container
+    // Show a better loading state in the result container
     const resultContainer = document.getElementById('lawResult');
     resultContainer.innerHTML = `
         <div class="law-box" style="text-align: center; padding: 40px;">
@@ -405,7 +419,7 @@ async function showFinalResult() {
         </div>
     `;
 
-    // ✅ Normalize answers to English for API
+    // Normalize answers to English for API
     const normalizedAnswers = {};
     Object.keys(answers).forEach(key => {
         const value = answers[key];
@@ -419,7 +433,7 @@ async function showFinalResult() {
         }
     });
 
-    // ✅ Use the global "answers" object that was filled during questions
+    // Use the global "answers" object that was filled during questions
     const payload = { answers: normalizedAnswers };
 
     try {
@@ -449,11 +463,11 @@ async function showFinalResult() {
 
         const finalLaw = data.predicted_law;
 
-        // ✅ Update UI elements
+        // Update UI elements
         document.getElementById('resultTitle').textContent = t.resultTitle;
         document.getElementById('restartBtn').style.display = 'inline-block';
 
-        // ✅ Clear loading state and show results
+        // Clear loading state and show results
         resultContainer.innerHTML = '';
 
         const law = laws[selectedLanguage][finalLaw];
@@ -463,7 +477,7 @@ async function showFinalResult() {
             lawBox.className = 'law-box';
             lawBox.style.animation = 'fadeIn 0.5s ease-in';
             lawBox.innerHTML = `
-                <div class="law-number">${t.primaryLaw} ${finalLaw}</div>
+                <div class="law-number">${t.primaryLaw} ${selectedLanguage === 'bangla' ? toBanglaNumber(finalLaw) : finalLaw}</div>
                 <div class="law-title">${law.title}</div>
                 <div class="law-content">${law.content}</div>
             `;
@@ -478,7 +492,7 @@ async function showFinalResult() {
                 recommendationBox.innerHTML = `
                     <div class="law-number" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">${t.recommendation}</div>
                     <div class="law-title">${t.nextSteps}</div>
-                    <div class="law-content">${t.recommendationText.replace('this law', selectedLanguage === 'english' ? `Law ${finalLaw}` : `আইন ${finalLaw}`)}</div>
+                    <div class="law-content">${t.recommendationText.replace('this law', selectedLanguage === 'english' ? `Law ${finalLaw}` : `আইন ${toBanglaNumber(finalLaw)}`)}</div>
                 `;
                 resultContainer.appendChild(recommendationBox);
             }, 200);
@@ -487,7 +501,7 @@ async function showFinalResult() {
             resultContainer.innerHTML = `
                 <div class="law-box" style="border-left: 6px solid orange;">
                     <div class="law-title">${selectedLanguage === 'english' ? 'Law Not Found' : 'আইন পাওয়া যায়নি'}</div>
-                    <div class="law-content">${selectedLanguage === 'english' ? `The predicted law number (${finalLaw}) was not found in our database.` : `পূর্বাভাসিত আইন নম্বর (${finalLaw}) আমাদের ডাটাবেসে পাওয়া যায়নি।`}</div>
+                    <div class="law-content">${selectedLanguage === 'english' ? `The predicted law number (${finalLaw}) was not found in our database.` : `পূর্বাভাসিত আইন নম্বর (${toBanglaNumber(finalLaw)}) আমাদের ডাটাবেসে পাওয়া যায়নি।`}</div>
                 </div>
             `;
         }
@@ -523,7 +537,7 @@ async function showFinalResult() {
     }
 }
 
-// ✅ Add a function to ping the server and wake it up early
+// Add a function to ping the server and wake it up early
 async function wakeUpServer() {
     try {
         // Ping the server when questions start to wake it up early
@@ -539,17 +553,6 @@ async function wakeUpServer() {
     }
 }
 
-// ✅ Modify startQuestions to wake up server early
-function startQuestions() {
-    document.querySelector('.start-screen').style.display = 'none';
-    document.querySelector('.question-container').style.display = 'block';
-    document.querySelector('.question-container').classList.add('fade-in');
-    
-    // Wake up the server as soon as questions start
-    wakeUpServer();
-    
-    showQuestion();
-}
 function restart() {
     currentQuestion = 0;
     answers = {};
