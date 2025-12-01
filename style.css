@@ -878,3 +878,56 @@ body {
     font-size: 1.3rem;
     line-height: 1.8;
 }
+
+.modal-overlay {
+    display: none; 
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-box {
+    background: #ffffff;
+    padding: 20px 30px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.close-modal {
+    margin-top: 15px;
+    padding: 8px 16px;
+    border: none;
+    background: #4a4a4a;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+.result-container {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.complaint-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+}
+
+.complaint-text-box {
+    padding: 15px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    font-size: 15px;
+}
+

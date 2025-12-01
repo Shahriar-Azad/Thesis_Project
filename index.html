@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Legal Rights Advisor - HCI Legal Access Platform</title>
     <link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
 <body>
     <div class="background-elements">
@@ -54,8 +57,20 @@
     <button class="btn primary-btn" onclick="showProblemDescription()">
         <span>✍️</span> <span id="describeProblemBtn">Describe Problem</span>
     </button>
+
+
+    <button class="btn primary-btn" onclick="showComingSoon()">
+        <span>🤖</span> <span>Try AI Chatbot</span>
+    </button>
 </div>
             </div>
+
+            <div id="comingSoonModal" class="modal-overlay">
+    <div class="modal-box">
+        <h2>Coming Soon 🚀</h2>
+        <button class="close-modal" onclick="closeComingSoon()">Close</button>
+    </div>
+</div>
             <!-- Add this after the start-screen div -->
 <div class="problem-description-container">
     <h2 id="problemTitle">Describe Your Problem</h2>
@@ -79,6 +94,7 @@
     </button>
 </div>
 </div>
+
             <div class="question-container">
                 <div class="phase-indicator" id="phaseIndicator">Assessment Phase</div>
                 
@@ -105,10 +121,23 @@
             <div class="result-container">
                 <h2 class="result-title" id="resultTitle">Final Legal Assessment</h2>
                 <div class="laws-grid" id="lawResult"></div>
+
+                <!-- <div class="export-buttons">
+    <button class="btn" onclick="exportToPDF()">📄 Export as PDF</button>
+    <button class="btn" onclick="exportToExcel()">📊 Export as Excel</button>
+</div> -->
+
+<button class="btn" onclick="exportPDF()">Export as PDF</button>
+<button class="btn" onclick="exportExcel()">Export as Excel</button>
+
                 <button class="btn" id="restartBtn" onclick="restart()">Start New Assessment</button>
+
+                
             </div>
         </div>
     </div>
+    
+
 <script src="script.js"></script>
 </body>
 </html>

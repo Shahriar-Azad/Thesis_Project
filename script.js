@@ -38,6 +38,14 @@ const translations = {
         detailedQuestionnaire: "Detailed Questionnaire",
         describeProblem: "Describe Problem",
         goBackBtn: "◄ Go Back",
+        // In english section:
+// voiceStart: "Click microphone to speak",
+// voiceListening: "Listening... Speak now",
+// voiceStop: "Click to stop",
+// voiceError: "Voice input not supported. Try typing instead.",
+// voiceNoSpeech: "No speech detected. Try again.",
+// voiceSuggestions: "Quick Suggestions:",
+// voiceProcessing: "Processing speech...",
     },
     bangla: {
 headerTitle: "আইনি অধিকার পরামর্শদাতা",
@@ -75,6 +83,14 @@ headerTitle: "আইনি অধিকার পরামর্শদাতা"
         detailedQuestionnaire: "বিস্তারিত প্রশ্নমালা",
         describeProblem: "সমস্যার বর্ণনা দিন",
         goBackBtn: "◄ ফিরে যান",
+        // In bangla section:
+// voiceStart: "মাইক্রোফোনে ক্লিক করে কথা বলুন",
+// voiceListening: "শোনা হচ্ছে... এখন কথা বলুন",
+// voiceStop: "বন্ধ করতে ক্লিক করুন",
+// voiceError: "ভয়েস ইনপুট সমর্থিত নয়। টাইপ করে চেষ্টা করুন।",
+// voiceNoSpeech: "কোন কথা শোনা যায়নি। আবার চেষ্টা করুন।",
+// voiceSuggestions: "দ্রুত পরামর্শ:",
+// voiceProcessing: "কথা প্রক্রিয়া করা হচ্ছে...",
     
         
 
@@ -310,6 +326,7 @@ function selectLanguage(language) {
     
     // Update all text content
     updateLanguage();
+
     
     // If we're in the middle of questions, update the current question text
     if (document.querySelector('.question-container').style.display === 'block' || 
@@ -319,6 +336,26 @@ function selectLanguage(language) {
 }
 function updateLanguage() {
     const t = translations[selectedLanguage];
+
+        const voiceStatus = document.getElementById('voiceStatus');
+    if (voiceStatus && !isListening) {
+        voiceStatus.textContent = t.voiceStart;
+    }
+    
+    // Update voice processing text if visible
+    const voiceProcessing = document.getElementById('voiceProcessing');
+    if (voiceProcessing) {
+        voiceProcessing.querySelector('div:last-child').textContent = t.voiceProcessing;
+    }
+    
+    // Update voice suggestions title if visible
+    const voiceSuggestions = document.getElementById('voiceSuggestions');
+    if (voiceSuggestions) {
+        const title = voiceSuggestions.querySelector('div');
+        if (title) {
+            title.textContent = t.voiceSuggestions;
+        }
+    }
     
     // Always update these elements (they always exist)
     document.getElementById('headerTitle').textContent = t.headerTitle;
@@ -564,6 +601,9 @@ async function showFinalResult() {
 
     const t = translations[selectedLanguage];
 
+    window.finalLawMatches = matchedLaws; 
+
+
     // Show a better loading state in the result container
     const resultContainer = document.getElementById('lawResult');
     resultContainer.innerHTML = `
@@ -765,6 +805,8 @@ function showProblemDescription() {
         // Trigger initial count
         textarea.dispatchEvent(new Event('input'));
     }
+
+
     
     // Update all text elements in problem description container
     const problemTitle = document.getElementById('problemTitle');
@@ -1065,3 +1107,121 @@ function restartAndShowDescription() {
     // Focus on textarea
     textarea.focus();
 }
+
+
+function showComingSoon() {
+    document.getElementById("comingSoonModal").style.display = "flex";
+}
+
+function closeComingSoon() {
+    document.getElementById("comingSoonModal").style.display = "none";
+}
+
+
+// ----------------------------
+// PDF EXPORT
+// ----------------------------
+async function exportPDF() {
+    const resultContainer = document.getElementById("lawResult");
+    const boxes = resultContainer.querySelectorAll(".law-box");
+
+    if (boxes.length === 0) {
+        alert("No result to export.");
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+
+    let y = 10;
+
+    boxes.forEach((box, index) => {
+        const title = box.querySelector(".law-title")?.innerText || "";
+        const number = box.querySelector(".law-number")?.innerText || "";
+        const content = box.querySelector(".law-content")?.innerText || "";
+
+        pdf.setFontSize(16);
+        pdf.text(number, 10, y);
+        y += 8;
+
+        pdf.setFontSize(14);
+        pdf.text(title, 10, y);
+        y += 8;
+
+        pdf.setFontSize(12);
+
+        const splitContent = pdf.splitTextToSize(content, 180);
+        pdf.text(splitContent, 10, y);
+        y += splitContent.length * 7 + 10;
+
+        if (index < boxes.length - 1) {
+            pdf.line(10, y, 200, y);
+            y += 10;
+        }
+
+        if (y > 270) {
+            pdf.addPage();
+            y = 10;
+        }
+    });
+
+    pdf.save("legal_result.pdf");
+}
+
+
+
+// ----------------------------
+// EXCEL / CSV EXPORT
+// ----------------------------
+function exportExcel() {
+    const resultContainer = document.getElementById("lawResult");
+    const boxes = resultContainer.querySelectorAll(".law-box");
+
+    if (boxes.length === 0) {
+        alert("No result to export.");
+        return;
+    }
+
+    let csv = "Section,Title,Content\n";
+
+    boxes.forEach(box => {
+        const number = box.querySelector(".law-number")?.innerText.replace(/,/g, " ") || "";
+        const title = box.querySelector(".law-title")?.innerText.replace(/,/g, " ") || "";
+        const content = box.querySelector(".law-content")?.innerText.replace(/,/g, " ") || "";
+
+        csv += `"${number}","${title}","${content}"\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "legal_result.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+
+
+// ----------------------------
+// YOUR LAW RESULT GENERATION
+// ----------------------------
+// ❗ Keep your existing logic — just ensure it produces this:
+
+
+
+// lawResult.innerHTML += `
+//     <div class="law-card">
+//         <h3>${lawTitle}</h3>
+//         <p>${lawDescription}</p>
+//     </div>
+// `;
+
+
+
+// This structure MUST be used for Excel export.
+// The rest of your system can stay the same.
+
+
+
