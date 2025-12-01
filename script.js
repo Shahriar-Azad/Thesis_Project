@@ -9,9 +9,11 @@ const translations = {
         policeHotline: "Emergency Police: 999",
         startTitle: "Advanced Legal Consultation System",
         startDescription: "Experience our cutting-edge HCI-based approach to understanding consumer and business owner rights. Our intelligent system will guide you through a comprehensive assessment to identify applicable laws for your specific situation.",
-        startBtn: "Begin Legal Assessment",
+        startBtn: "Detailed Questionnaire",
+        switchToTextBtn: "Describe Problem",
         phaseIndicator: "Assessment Phase",
         backBtn: "Previous",
+        goBackBtn: "◄ Go Back",
         nextBtn: "Next Question",
         finalBtn: "Get Final Result",
         loadingTitle: "Analyzing Your Legal Situation",
@@ -23,18 +25,32 @@ const translations = {
         recommendationText: "Based on your responses, this law is most applicable to your situation. We recommend consulting with a legal professional for detailed advice on how to proceed with your specific case. Keep all relevant documentation and evidence related to your consumer experience.",
         primaryLaw: "Primary Applicable Law",
         error: "Error",
-        errorMsg: "Could not fetch prediction. Please try again later."
+        errorMsg: "Could not fetch prediction. Please try again later.",
+        problemTitle: "Describe Your Problem",
+        problemDescription: "Tell us about your consumer or business issue in your own words. Our AI will analyze your description and suggest applicable laws.",
+        problemTextPlaceholder: "Describe your problem here... Example: I bought a product without expiration date and the seller refused to refund...",
+        analyzeBtn: "Analyze Problem",
+        useQuestionsBtn: "Use Questionnaire Instead",
+        charCount: "characters",
+        analyzingText: "Analyzing your problem description...",
+        analysisDesc: "Our AI is processing your text to identify relevant laws...",
+        tryAnotherDesc: "↩️ Try Another Description",
+        detailedQuestionnaire: "Detailed Questionnaire",
+        describeProblem: "Describe Problem",
+        goBackBtn: "◄ Go Back",
     },
     bangla: {
-        headerTitle: "আইনি অধিকার পরামর্শদাতা",
+headerTitle: "আইনি অধিকার পরামর্শদাতা",
         headerSubtitle: "ভোক্তা ও ব্যবসায়ী মালিক অধিকার এবং আইনি অ্যাক্সেস প্ল্যাটফর্ম",
         consumerHotline: "ভোক্তা অধিকার হটলাইন: ১৬১২১",
         policeHotline: "জরুরি পুলিশ হেল্পলাইন: ৯৯৯",
         startTitle: "উন্নত আইনি পরামর্শ ব্যবস্থা",
         startDescription: "ভোক্তা এবং ব্যবসায়ী মালিক অধিকার বোঝার জন্য আমাদের অত্যাধুনিক এইচসিআই-ভিত্তিক পদ্ধতির অভিজ্ঞতা নিন। আমাদের বুদ্ধিমান সিস্টেম আপনার নির্দিষ্ট পরিস্থিতির জন্য প্রযোজ্য আইন সনাক্ত করতে একটি ব্যাপক মূল্যায়নের মাধ্যমে আপনাকে গাইড করবে।",
-        startBtn: "আইনি মূল্যায়ন শুরু করুন",
+        startBtn: "বিস্তারিত প্রশ্নমালা",
+        switchToTextBtn: "সমস্যার বর্ণনা দিন",
         phaseIndicator: "মূল্যায়ন পর্যায়",
         backBtn: "পূর্ববর্তী",
+        goBackBtn: "◄ ফিরে যান",
         nextBtn: "পরবর্তী প্রশ্ন",
         finalBtn: "চূড়ান্ত ফলাফল পান",
         loadingTitle: "আপনার আইনি পরিস্থিতি বিশ্লেষণ করা হচ্ছে",
@@ -46,7 +62,24 @@ const translations = {
         recommendationText: "আপনার প্রতিক্রিয়ার ভিত্তিতে, এই আইনটি আপনার পরিস্থিতিতে সবচেয়ে প্রযোজ্য। আমরা আপনার নির্দিষ্ট মামলা নিয়ে কীভাবে এগিয়ে যেতে হবে সে সম্পর্কে বিস্তারিত পরামর্শের জন্য একজন আইন পেশাদারের সাথে পরামর্শ করার সুপারিশ করি। আপনার ভোক্তা অভিজ্ঞতা সম্পর্কিত সমস্ত প্রাসঙ্গিক ডকুমেন্টেশন এবং প্রমাণ রাখুন।",
         primaryLaw: "প্রাথমিক প্রযোজ্য আইন",
         error: "ত্রুটি",
-        errorMsg: "পূর্বাভাস আনা যায়নি। পরে আবার চেষ্টা করুন।"
+        errorMsg: "পূর্বাভাস আনা যায়নি। পরে আবার চেষ্টা করুন।",
+        problemTitle: "আপনার সমস্যার বর্ণনা দিন",
+        problemDescription: "আপনার ভোক্তা বা ব্যবসায়িক সমস্যা আপনার নিজের ভাষায় আমাদের বলুন। আমাদের AI আপনার বর্ণনা বিশ্লেষণ করে প্রযোজ্য আইন সুপারিশ করবে।",
+        problemTextPlaceholder: "এখানে আপনার সমস্যার বর্ণনা দিন... উদাহরণ: আমি মেয়াদ শেষ হওয়ার তারিখ ছাড়া একটি পণ্য কিনেছি এবং বিক্রেতা টাকা ফেরত দিতে অস্বীকার করেছে...",
+        analyzeBtn: "সমস্যা বিশ্লেষণ করুন",
+        useQuestionsBtn: "প্রশ্নমালা ব্যবহার করুন",
+        charCount: "অক্ষর",
+        analyzingText: "আপনার সমস্যার বর্ণনা বিশ্লেষণ করা হচ্ছে...",
+        analysisDesc: "আমাদের AI প্রাসঙ্গিক আইন চিহ্নিত করতে আপনার টেক্সট প্রক্রিয়া করছে...",
+        tryAnotherDesc: "↩️ অন্য বর্ণনা চেষ্টা করুন",
+        detailedQuestionnaire: "বিস্তারিত প্রশ্নমালা",
+        describeProblem: "সমস্যার বর্ণনা দিন",
+        goBackBtn: "◄ ফিরে যান",
+    
+        
+
+
+
     }
 };
 
@@ -263,28 +296,128 @@ function selectLanguage(language) {
     document.querySelectorAll('.language-option').forEach(opt => {
         opt.classList.remove('selected');
     });
-    event.target.classList.add('selected');
+    
+    // Find which element was clicked
+    let targetElement = event.target;
+    // If clicked on text inside the div, get the parent
+    if (!targetElement.classList.contains('language-option')) {
+        targetElement = targetElement.closest('.language-option');
+    }
+    
+    if (targetElement) {
+        targetElement.classList.add('selected');
+    }
     
     // Update all text content
     updateLanguage();
+    
+    // If we're in the middle of questions, update the current question text
+    if (document.querySelector('.question-container').style.display === 'block' || 
+        document.querySelector('.question-container').style.display === '') {
+        showQuestion();
+    }
 }
-
 function updateLanguage() {
     const t = translations[selectedLanguage];
     
+    // Always update these elements (they always exist)
     document.getElementById('headerTitle').textContent = t.headerTitle;
     document.getElementById('headerSubtitle').textContent = t.headerSubtitle;
     document.getElementById('consumerHotline').textContent = t.consumerHotline;
     document.getElementById('policeHotline').textContent = t.policeHotline;
     document.getElementById('startTitle').textContent = t.startTitle;
     document.getElementById('startDescription').textContent = t.startDescription;
-    document.getElementById('startBtn').textContent = t.startBtn;
-    document.getElementById('phaseIndicator').textContent = t.phaseIndicator;
-    document.getElementById('backBtn').textContent = t.backBtn;
-    document.getElementById('loadingTitle').textContent = t.loadingTitle;
-    document.getElementById('loadingDesc').textContent = t.loadingDesc;
-    document.getElementById('resultTitle').textContent = t.resultTitle;
-    document.getElementById('restartBtn').textContent = t.restartBtn;
+    
+    // Update elements only if they exist
+    const startBtn = document.getElementById('startBtn');
+    if (startBtn) startBtn.textContent = t.startBtn;
+    
+    const phaseIndicator = document.getElementById('phaseIndicator');
+    if (phaseIndicator) phaseIndicator.textContent = t.phaseIndicator;
+    
+    const backBtn = document.getElementById('backBtn');
+    if (backBtn) backBtn.textContent = t.backBtn;
+    
+    const loadingTitle = document.getElementById('loadingTitle');
+    if (loadingTitle) loadingTitle.textContent = t.loadingTitle;
+    
+    const loadingDesc = document.getElementById('loadingDesc');
+    if (loadingDesc) loadingDesc.textContent = t.loadingDesc;
+    
+    const resultTitle = document.getElementById('resultTitle');
+    if (resultTitle) resultTitle.textContent = t.resultTitle;
+    
+    const restartBtn = document.getElementById('restartBtn');
+    if (restartBtn) restartBtn.textContent = t.restartBtn;
+    
+    // Update problem description texts only if elements exist
+    const problemTitle = document.getElementById('problemTitle');
+    if (problemTitle) {
+        problemTitle.textContent = t.problemTitle;
+        if (selectedLanguage === 'bangla') {
+            problemTitle.classList.add('bangla-text');
+        } else {
+            problemTitle.classList.remove('bangla-text');
+        }
+    }
+    
+    const problemDescription = document.getElementById('problemDescription');
+    if (problemDescription) {
+        problemDescription.textContent = t.problemDescription;
+        if (selectedLanguage === 'bangla') {
+            problemDescription.classList.add('bangla-text');
+        } else {
+            problemDescription.classList.remove('bangla-text');
+        }
+    }
+    
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    if (analyzeBtn) analyzeBtn.innerHTML = `<span>🔍</span> ${t.analyzeBtn}`;
+    
+    // Update start screen buttons
+    const questionnaireBtn = document.getElementById('questionnaireBtn');
+    if (questionnaireBtn) questionnaireBtn.textContent = t.detailedQuestionnaire;
+    
+    const describeProblemBtn = document.getElementById('describeProblemBtn');
+    if (describeProblemBtn) describeProblemBtn.textContent = t.describeProblem;
+    
+    // Update problem description placeholder if textarea exists
+    const problemText = document.getElementById('problemText');
+    if (problemText) {
+        problemText.placeholder = t.problemTextPlaceholder;
+        
+        // Apply/remove Bangla font class
+        if (selectedLanguage === 'bangla') {
+            problemText.classList.add('bangla-text');
+        } else {
+            problemText.classList.remove('bangla-text');
+        }
+    }
+
+    
+    
+    // Update character count text
+    const charCount = document.getElementById('charCount');
+    if (charCount && problemText) {
+        const length = problemText.value.length;
+        charCount.textContent = `${length}/1000 ${t.charCount}`;
+    }
+    
+    // Update "Use Questionnaire Instead" button
+    const useQuestionsBtn = document.querySelector('.text-analysis-options .primary-btn');
+    if (useQuestionsBtn) {
+        useQuestionsBtn.innerHTML = `<span>📝</span> ${t.useQuestionsBtn}`;
+    }
+    
+    // Update next button text if it exists and we're in questionnaire
+    const nextBtn = document.getElementById('nextBtn');
+    if (nextBtn) {
+        if (currentQuestion === 14) {
+            nextBtn.textContent = t.finalBtn;
+        } else {
+            nextBtn.textContent = t.nextBtn;
+        }
+    }
 }
 
 function startQuestions() {
@@ -329,8 +462,21 @@ function showQuestion() {
     const progress = ((currentQuestion + 1) / totalQuestions) * 100;
     document.getElementById('progress').style.width = progress + '%';
 
-    // Show/hide back button
-    document.getElementById('backBtn').style.display = currentQuestion > 0 ? 'inline-block' : 'none';
+    // Show/hide back button - ALWAYS show it, but with different functionality
+    const backBtn = document.getElementById('backBtn');
+    backBtn.style.display = 'inline-block';
+    
+    if (currentQuestion === 0) {
+        // First question - make it go back to homepage
+        backBtn.textContent = selectedLanguage === 'english' ? '◄ Go Back' : '◄ ফিরে যান';
+        backBtn.onclick = goBackToHomepage;
+        backBtn.style.background = 'linear-gradient(135deg, #95a5a6, #7f8c8d)';
+    } else {
+        // Other questions - make it go to previous question
+        backBtn.textContent = t.backBtn;
+        backBtn.onclick = previousQuestion;
+        backBtn.style.background = 'linear-gradient(135deg, #95a5a6, #7f8c8d)';
+    }
     
     selectedOption = null;
     document.getElementById('nextBtn').disabled = true;
@@ -341,6 +487,19 @@ function showQuestion() {
     } else {
         document.getElementById('nextBtn').textContent = t.nextBtn;
     }
+}
+
+// Add new function to go back to homepage
+function goBackToHomepage() {
+    document.querySelector('.question-container').style.display = 'none';
+    document.querySelector('.start-screen').style.display = 'block';
+    document.querySelector('.start-screen').classList.add('fade-in');
+    
+    // Reset progress
+    currentQuestion = 0;
+    answers = {};
+    selectedOption = null;
+    document.getElementById('progress').style.width = '0%';
 }
 
 function selectOption(index, value, element) {
@@ -559,6 +718,350 @@ function restart() {
     selectedOption = null;
     
     document.querySelector('.result-container').style.display = 'none';
+    document.querySelector('.problem-description-container').style.display = 'none';
     document.querySelector('.start-screen').style.display = 'block';
     document.getElementById('progress').style.width = '0%';
+    
+    // Clear text area
+    document.getElementById('problemText').value = '';
+    document.getElementById('charCount').textContent = '0/1000 ' + translations[selectedLanguage].charCount;
+}
+
+
+// New functions for problem description feature
+
+function showProblemDescription() {
+    document.querySelector('.start-screen').style.display = 'none';
+    const problemContainer = document.querySelector('.problem-description-container');
+    problemContainer.style.display = 'block';
+    problemContainer.classList.add('fade-in');
+    
+    // Initialize text area
+    const textarea = document.getElementById('problemText');
+    const charCount = document.getElementById('charCount');
+    const t = translations[selectedLanguage];
+    
+    if (textarea) {
+        // Update placeholder text
+        textarea.placeholder = t.problemTextPlaceholder;
+        
+        // Add character count functionality
+        textarea.addEventListener('input', function() {
+            const length = this.value.length;
+            if (charCount) {
+                charCount.textContent = `${length}/1000 ${t.charCount}`;
+                
+                // Update color based on length
+                if (length > 900) {
+                    charCount.style.color = '#e74c3c';
+                } else if (length > 500) {
+                    charCount.style.color = '#f39c12';
+                } else {
+                    charCount.style.color = 'rgba(255, 255, 255, 0.7)';
+                }
+            }
+        });
+        
+        // Trigger initial count
+        textarea.dispatchEvent(new Event('input'));
+    }
+    
+    // Update all text elements in problem description container
+    const problemTitle = document.getElementById('problemTitle');
+    if (problemTitle) problemTitle.textContent = t.problemTitle;
+    
+    const problemDesc = document.getElementById('problemDescription');
+    if (problemDesc) problemDesc.textContent = t.problemDescription;
+    
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    if (analyzeBtn) analyzeBtn.innerHTML = `<span>🔍</span> ${t.analyzeBtn}`;
+    
+    // Update the "Use Question Assessment" button
+    const useQuestionsBtn = document.querySelector('.text-analysis-options .primary-btn');
+    if (useQuestionsBtn) {
+        useQuestionsBtn.innerHTML = `<span>📝</span> ${t.useQuestionsBtn}`;
+    }
+    
+    // Apply Bangla font class if needed
+    if (selectedLanguage === 'bangla') {
+        if (textarea) textarea.classList.add('bangla-text');
+        if (problemTitle) problemTitle.classList.add('bangla-text');
+        if (problemDesc) problemDesc.classList.add('bangla-text');
+    } else {
+        if (textarea) textarea.classList.remove('bangla-text');
+        if (problemTitle) problemTitle.classList.remove('bangla-text');
+        if (problemDesc) problemDesc.classList.remove('bangla-text');
+    }
+}
+
+function switchToQuestions() {
+    document.querySelector('.problem-description-container').style.display = 'none';
+    startQuestions();
+}
+
+function switchToTextMode() {
+    document.querySelector('.question-container').style.display = 'none';
+    document.querySelector('.start-screen').style.display = 'none';
+    document.querySelector('.problem-description-container').style.display = 'block';
+    document.querySelector('.problem-description-container').classList.add('fade-in');
+}
+
+async function analyzeProblem() {
+    const problemText = document.getElementById('problemText').value.trim();
+    const t = translations[selectedLanguage];
+    
+    if (!problemText) {
+        alert(selectedLanguage === 'english' 
+            ? "Please describe your problem first."
+            : "দয়া করে প্রথমে আপনার সমস্যার বর্ণনা দিন।");
+        return;
+    }
+    
+    if (problemText.length < 20) {
+        alert(selectedLanguage === 'english'
+            ? "Please provide a more detailed description (at least 20 characters)."
+            : "দয়া করে আরও বিস্তারিত বর্ণনা প্রদান করুন (কমপক্ষে ২০ অক্ষর)।");
+        return;
+    }
+    
+    // Show loading
+    document.querySelector('.problem-description-container').style.display = 'none';
+    document.querySelector('.loading').style.display = 'block';
+    document.querySelector('.loading').classList.add('fade-in');
+    
+    // Update loading text for text analysis
+    document.getElementById('loadingTitle').textContent = t.analyzingText;
+    document.getElementById('loadingDesc').textContent = t.analysisDesc;
+    
+    try {
+        // Call the backend for text analysis
+        const payload = {
+            problem_text: problemText,
+            language: selectedLanguage
+        };
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 60000);
+        
+        const response = await fetch("https://consumer-rights.onrender.com/analyze-text", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+            signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Handle the response
+        if (data.error) {
+            throw new Error(data.error);
+        }
+        
+        // Show results
+        showTextAnalysisResult(data);
+        
+    } catch (error) {
+        console.error("Error analyzing text:", error);
+        
+        // Fallback: Try to extract keywords and match with laws
+        setTimeout(() => {
+            const fallbackLaw = getLawFromTextAnalysis(problemText);
+            showTextAnalysisResult({ 
+                predicted_law: fallbackLaw,
+                confidence: "High",
+                keywords_found: extractKeywords(problemText)
+            });
+        }, 1000);
+    }
+}
+
+function getLawFromTextAnalysis(text) {
+    // Simple keyword-based law matching (fallback when AI is unavailable)
+    const lowerText = text.toLowerCase();
+    
+    // Keywords for different laws
+    if (lowerText.includes('expiration') || lowerText.includes('expiry') || lowerText.includes('moya')) {
+        return 14; // Date expired goods
+    } else if (lowerText.includes('weight') || lowerText.includes('measure') || lowerText.includes('ওজন')) {
+        return 10; // Weight deception
+    } else if (lowerText.includes('fake') || lowerText.includes('counterfeit') || lowerText.includes('নকল')) {
+        return 13; // Fake goods
+    } else if (lowerText.includes('harmful') || lowerText.includes('unsafe') || lowerText.includes('ক্ষতিকর')) {
+        return 6; // Harmful materials
+    } else if (lowerText.includes('price') || lowerText.includes('charge') || lowerText.includes('মূল্য')) {
+        return 4; // Overcharging
+    } else if (lowerText.includes('advertisement') || lowerText.includes('ads') || lowerText.includes('বিজ্ঞাপন')) {
+        return 8; // False advertisement
+    } else if (lowerText.includes('label') || lowerText.includes('information') || lowerText.includes('লেবেল')) {
+        return 1; // Label information
+    } else if (lowerText.includes('refund') || lowerText.includes('return') || lowerText.includes('ফেরত')) {
+        return 9; // Not delivering promised service
+    } else if (lowerText.includes('mix') || lowerText.includes('adulterated') || lowerText.includes('ভেজাল')) {
+        return 5; // Adulterated goods
+    }
+    
+    // Default to most common consumer issue
+    return 1;
+}
+
+function extractKeywords(text) {
+    const keywords = [];
+    const lowerText = text.toLowerCase();
+    
+    const keywordMap = {
+        'expiration': ['expiration', 'expiry', 'moya', 'মেয়াদ'],
+        'weight': ['weight', 'measure', 'ওজন', 'পরিমাপ'],
+        'price': ['price', 'charge', 'মূল্য', 'টাকা'],
+        'fake': ['fake', 'counterfeit', 'নকল', 'জাল'],
+        'harmful': ['harmful', 'unsafe', 'dangerous', 'ক্ষতিকর'],
+        'advertisement': ['advertisement', 'ads', 'claim', 'বিজ্ঞাপন'],
+        'refund': ['refund', 'return', 'money back', 'ফেরত'],
+        'label': ['label', 'information', 'details', 'লেবেল']
+    };
+    
+    for (const [key, terms] of Object.entries(keywordMap)) {
+        if (terms.some(term => lowerText.includes(term))) {
+            keywords.push(key);
+        }
+    }
+    
+    return keywords;
+}
+
+function showTextAnalysisResult(data) {
+    document.querySelector('.loading').style.display = 'none';
+    document.querySelector('.result-container').style.display = 'block';
+    document.querySelector('.result-container').classList.add('fade-in');
+    
+    const t = translations[selectedLanguage];
+    const resultContainer = document.getElementById('lawResult');
+    
+    resultContainer.innerHTML = '';
+    
+    // Show the main predicted law
+    const law = laws[selectedLanguage][data.predicted_law];
+    
+    if (law) {
+        const lawBox = document.createElement('div');
+        lawBox.className = 'law-box';
+        lawBox.style.animation = 'fadeIn 0.5s ease-in';
+        lawBox.innerHTML = `
+            <div class="law-number">${t.primaryLaw} ${selectedLanguage === 'bangla' ? toBanglaNumber(data.predicted_law) : data.predicted_law}</div>
+            <div class="law-title">${law.title}</div>
+            <div class="law-content">${law.content}</div>
+            ${data.confidence ? `<div style="margin-top: 15px; padding: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 10px;">
+                <strong>${selectedLanguage === 'english' ? 'Confidence:' : 'নির্ভরযোগ্যতা:'}</strong> ${data.confidence}
+            </div>` : ''}
+        `;
+        resultContainer.appendChild(lawBox);
+        
+        // Show related laws if available
+        if (data.related_laws && data.related_laws.length > 0) {
+            const relatedBox = document.createElement('div');
+            relatedBox.className = 'law-box';
+            relatedBox.style.borderLeft = '6px solid #3498db';
+            relatedBox.style.animation = 'fadeIn 0.5s ease-in';
+            relatedBox.style.marginTop = '20px';
+            
+            let relatedLawsHTML = '';
+            data.related_laws.forEach(lawNum => {
+                const relatedLaw = laws[selectedLanguage][lawNum];
+                if (relatedLaw) {
+                    relatedLawsHTML += `
+                        <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                <span style="background: #3498db; color: white; padding: 3px 10px; border-radius: 15px; font-size: 0.9rem;">
+                                    ${selectedLanguage === 'bangla' ? toBanglaNumber(lawNum) : lawNum}
+                                </span>
+                                <strong>${relatedLaw.title}</strong>
+                            </div>
+                            <div style="color: #666; font-size: 0.95rem;">${relatedLaw.content.substring(0, 150)}...</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            relatedBox.innerHTML = `
+                <div class="law-number" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+                    ${selectedLanguage === 'english' ? 'Related Laws' : 'সম্পর্কিত আইন'}
+                </div>
+                <div class="law-title">${selectedLanguage === 'english' ? 'Other applicable laws based on your description' : 'আপনার বর্ণনার উপর ভিত্তি করে অন্যান্য প্রযোজ্য আইন'}</div>
+                <div class="law-content">${relatedLawsHTML}</div>
+            `;
+            resultContainer.appendChild(relatedBox);
+        }
+        
+        // Add recommendation section
+        setTimeout(() => {
+            const recommendationBox = document.createElement('div');
+            recommendationBox.className = 'law-box';
+            recommendationBox.style.borderLeft = '6px solid #27ae60';
+            recommendationBox.style.animation = 'fadeIn 0.5s ease-in';
+            recommendationBox.style.marginTop = '20px';
+            recommendationBox.innerHTML = `
+                <div class="law-number" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">${t.recommendation}</div>
+                <div class="law-title">${t.nextSteps}</div>
+                <div class="law-content">${t.recommendationText.replace('this law', selectedLanguage === 'english' ? `Law ${data.predicted_law}` : `আইন ${toBanglaNumber(data.predicted_law)}`)}</div>
+                <div style="margin-top: 20px; text-align: center;">
+<button onclick="restartAndShowDescription()" class="btn" style="background: linear-gradient(135deg, #667eea, #764ba2); margin-right: 10px;">
+    ${selectedLanguage === 'english' ? '↩️ Try Another Description' : '↩️ অন্য বর্ণনা চেষ্টা করুন'}
+</button>
+                </div>
+            `;
+            resultContainer.appendChild(recommendationBox);
+        }, 200);
+    } else {
+        // Handle case where law is not found
+        resultContainer.innerHTML = `
+            <div class="law-box" style="border-left: 6px solid orange;">
+                <div class="law-title">${selectedLanguage === 'english' ? 'Analysis Complete' : 'বিশ্লেষণ সম্পূর্ণ'}</div>
+                <div class="law-content">
+                    ${selectedLanguage === 'english' 
+                        ? `Based on your description, we identified Law ${data.predicted_law} as most applicable. However, we recommend using the detailed questionnaire for more accurate results.` 
+                        : `আপনার বর্ণনার ভিত্তিতে, আমরা আইন ${toBanglaNumber(data.predicted_law)} কে সবচেয়ে প্রযোজ্য হিসেবে চিহ্নিত করেছি। তবে, আরও সঠিক ফলাফলের জন্য আমরা বিশদ প্রশ্নমালা ব্যবহার করার পরামর্শ দিই।`}
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <button onclick="startQuestions()" class="btn" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        ${selectedLanguage === 'english' ? '📝 Use Detailed Assessment' : '📝 বিশদ মূল্যায়ন ব্যবহার করুন'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+}
+
+
+// Add this new function to handle restarting and showing description
+function restartAndShowDescription() {
+    // Hide result container
+    document.querySelector('.result-container').style.display = 'none';
+    
+    // Show problem description container
+    document.querySelector('.problem-description-container').style.display = 'block';
+    document.querySelector('.problem-description-container').classList.add('fade-in');
+    
+    // Clear the text area
+    const textarea = document.getElementById('problemText');
+    textarea.value = '';
+    
+    // Reset character count
+    const t = translations[selectedLanguage];
+    document.getElementById('charCount').textContent = `0/1000 ${t.charCount}`;
+    document.getElementById('charCount').style.color = 'rgba(255, 255, 255, 0.7)';
+    
+    // Apply Bangla font if needed
+    if (selectedLanguage === 'bangla') {
+        textarea.classList.add('bangla-text');
+    } else {
+        textarea.classList.remove('bangla-text');
+    }
+    
+    // Focus on textarea
+    textarea.focus();
 }

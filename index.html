@@ -47,8 +47,38 @@
                 <h2 id="startTitle">Advanced Legal Consultation System</h2>
                 <p id="startDescription">Experience our cutting-edge HCI-based approach to understanding consumer and business owner rights. Our intelligent system will guide you through a comprehensive assessment to identify applicable laws for your specific situation.</p>
                 
-                <button class="btn" id="startBtn" onclick="startQuestions()">Begin Legal Assessment</button>
+<div class="start-buttons">
+    <button class="btn" onclick="startQuestions()">
+        <span>📋</span> <span id="questionnaireBtn">Detailed Questionnaire</span>
+    </button>
+    <button class="btn primary-btn" onclick="showProblemDescription()">
+        <span>✍️</span> <span id="describeProblemBtn">Describe Problem</span>
+    </button>
+</div>
             </div>
+            <!-- Add this after the start-screen div -->
+<div class="problem-description-container">
+    <h2 id="problemTitle">Describe Your Problem</h2>
+    <p id="problemDescription">Tell us about your consumer or business issue in your own words. Our AI will analyze your description and suggest applicable laws.</p>
+    
+    <div class="text-input-container">
+        <textarea 
+            id="problemText" 
+            placeholder="Describe your problem here... Example: I bought a product without expiration date and the seller refused to refund..."
+            rows="6"
+        ></textarea>
+        <div class="char-count" id="charCount">0/1000 characters</div>
+    </div>
+    
+<div class="text-analysis-options">
+    <button class="btn" id="analyzeBtn" onclick="analyzeProblem()">
+        <span>🔍</span> Analyze Problem
+    </button>
+    <button class="btn primary-btn" onclick="switchToQuestions()">
+        <span>📝</span> Use Questionnaire Instead
+    </button>
+</div>
+</div>
             <div class="question-container">
                 <div class="phase-indicator" id="phaseIndicator">Assessment Phase</div>
                 
