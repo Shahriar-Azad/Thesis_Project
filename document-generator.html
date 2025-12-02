@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Document Generator</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: url(new_consume.jpg) no-repeat center center/cover;
+        backdrop-filter: blur(25px);
+        min-height: 100vh;
+        padding: 100px;
+        margin: 0;
+    }
+
+    /* ✅ Universal glassmorphism background for all sections */
+    .container,
+    .header,
+    .content,
+
+
+    .generated-document,
+    .document-content {
+        background: rgba(255, 255, 255, 0.15) !important;
+        backdrop-filter: blur(15px) !important;
+        -webkit-backdrop-filter: blur(15px) !important;
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        overflow: hidden;
+    }
+
+    .header {
+        color: white;
+        padding: 30px;
+        text-align: center;
+        background: rgba(255,255,255,0.15);
+    }
+
+    .header h1 {
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+
+    .language-toggle {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 15px;
+    }
+
+    .lang-btn {
+        padding: 8px 20px;
+        border: 2px solid white;
+        background: transparent;
+        color: white;
+        cursor: pointer;
+        border-radius: 20px;
+        transition: all 0.3s;
+        backdrop-filter: blur(10px);
+    }
+
+    .lang-btn.active {
+        background: rgba(255,255,255,0.6);
+        color: #667eea;
+    }
+
+    .content {
+        padding: 40px;
+    }
+
+    .document-types {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .doc-card {
+        padding: 25px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+    }
+
+    .doc-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(255, 255, 255, 0.25);
+    }
+
+    .doc-card.selected {
+        background: rgba(255,255,255,0.4) !important;
+    }
+
+    .doc-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+
+    .doc-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #fff;
+    }
+
+    .doc-desc {
+        font-size: 14px;
+        color: #f1f1f1;
+    }
+
+    .form-section {
+        display: none;
+        animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 10px;
+        background: rgba(255,255,255,0.2);
+        color: #fff;
+        backdrop-filter: blur(10px);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #fff;
+    }
+
+    .form-group textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .btn {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: white;
+        backdrop-filter: blur(10px);
+    }
+
+    .btn-primary {
+        background: rgba(102, 126, 234, 0.7);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.5);
+    }
+
+    .btn-secondary {
+        background: rgba(150,150,150,0.5);
+        margin-right: 10px;
+    }
+
+    .generated-document {
+        display: none;
+        padding: 30px;
+        border-radius: 15px;
+        border: 2px dashed rgba(255,255,255,0.4);
+    }
+
+    .document-content {
+        padding: 40px;
+        border-radius: 10px;
+        margin: 20px 0;
+        background: rgba(255,255,255,0.7) !important;
+        backdrop-filter: blur(5px);
+        color: #000;
+    }
+
+    .document-actions {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .back-btn {
+        background: rgba(255,255,255,0.3);
+        border: none;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        backdrop-filter: blur(10px);
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .container {
+            box-shadow: none;
+        }
+        .header, .document-actions, .btn {
+            display: none;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">← <span id="backText">Back</span></button>
+            <h1 id="headerTitle">📄 Legal Document Generator</h1>
+            <p id="headerDesc">Generate professional complaint letters and legal documents</p>
+            <div class="language-toggle">
+                <button class="lang-btn active" onclick="setLanguage('english')">English</button>
+                <button class="lang-btn" onclick="setLanguage('bangla')">বাংলা</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Document Type Selection -->
+            <div id="documentTypes" class="document-types">
+                <div class="doc-card" onclick="selectDocument('refund')">
+                    <div class="doc-icon">💰</div>
+                    <div class="doc-title" id="doc1Title">Refund Request</div>
+                    <div class="doc-desc" id="doc1Desc">Request money back for defective products</div>
+                </div>
+
+                <div class="doc-card" onclick="selectDocument('complaint')">
+                    <div class="doc-icon">📋</div>
+                    <div class="doc-title" id="doc2Title">Complaint Letter</div>
+                    <div class="doc-desc" id="doc2Desc">File a formal complaint against seller</div>
+                </div>
+
+            </div>
+
+            <!-- Form Section -->
+            <div id="formSection" class="form-section">
+                <h2 id="formTitle">Fill in the details</h2>
+
+                <div class="form-group">
+                    <label id="label1">Your Name:</label>
+                    <input type="text" id="yourName" placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label id="label2">Your Address:</label>
+                    <input type="text" id="yourAddress" placeholder="Enter your address">
+                </div>
+
+                <div class="form-group">
+                    <label id="label3">Your Phone:</label>
+                    <input type="tel" id="yourPhone" placeholder="Enter your phone number">
+                </div>
+
+                <div class="form-group">
+                    <label id="label4">Seller/Shop Name:</label>
+                    <input type="text" id="shopName" placeholder="Enter seller or shop name">
+                </div>
+
+                <div class="form-group">
+                    <label id="label5">Product/Service:</label>
+                    <input type="text" id="productName" placeholder="Enter product or service name">
+                </div>
+
+                <div class="form-group">
+                    <label id="label6">Purchase Date:</label>
+                    <input type="date" id="purchaseDate">
+                </div>
+
+                <div class="form-group">
+                    <label id="label7">Amount Paid:</label>
+                    <input type="number" id="amount" placeholder="Enter amount in Taka">
+                </div>
+
+                <div class="form-group">
+                    <label id="label8">Problem Description:</label>
+                    <textarea id="problemDesc" placeholder="Describe the issue in detail..."></textarea>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <button class="btn btn-secondary" onclick="resetForm()">
+                        <span>↺</span> <span id="resetBtn">Reset</span>
+                    </button>
+                    <button class="btn btn-primary" onclick="generateDocument()">
+                        <span>📄</span> <span id="generateBtn">Generate Document</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Generated Document -->
+            <div id="generatedDocument" class="generated-document">
+                <h2 id="docResultTitle">Your Document is Ready!</h2>
+                <div id="documentContent" class="document-content"></div>
+                
+                <div class="document-actions">
+                    <button class="btn btn-primary" onclick="printDocument()">
+                        <span>🖨️</span> <span id="printBtn">Print</span>
+                    </button>
+                    <button class="btn btn-primary" onclick="copyDocument()">
+                        <span>📋</span> <span id="copyBtn">Copy Text</span>
+                    </button>
+                    <button class="btn btn-primary" onclick="downloadDocument()">
+                        <span>💾</span> <span id="downloadBtn">Download</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="createNew()">
+                        <span>✨</span> <span id="newBtn">Create New</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLanguage = 'english';
+        let selectedDocType = '';
+
+        const translations = {
+            english: {
+                headerTitle: "📄 Legal Document Generator",
+                headerDesc: "Generate professional complaint letters and legal documents",
+                doc1Title: "Refund Request",
+                doc1Desc: "Request money back for defective products",
+                doc2Title: "Complaint Letter",
+                doc2Desc: "File a formal complaint against seller",
+                doc3Title: "Legal Notice",
+                doc3Desc: "Send legal notice before action",
+                doc4Title: "Authority Report",
+                doc4Desc: "Report to consumer rights authority",
+                formTitle: "Fill in the details",
+                label1: "Your Name:",
+                label2: "Your Address:",
+                label3: "Your Phone:",
+                label4: "Seller/Shop Name:",
+                label5: "Product/Service:",
+                label6: "Purchase Date:",
+                label7: "Amount Paid:",
+                label8: "Problem Description:",
+                resetBtn: "Reset",
+                generateBtn: "Generate Document",
+                docResultTitle: "Your Document is Ready!",
+                printBtn: "Print",
+                copyBtn: "Copy Text",
+                downloadBtn: "Download",
+                newBtn: "Create New",
+                backText: "Back"
+            },
+            bangla: {
+                headerTitle: "📄 আইনি নথি তৈরিকারক",
+                headerDesc: "পেশাদার অভিযোগপত্র এবং আইনি নথি তৈরি করুন",
+                doc1Title: "টাকা ফেরত অনুরোধ",
+                doc1Desc: "ত্রুটিপূর্ণ পণ্যের জন্য টাকা ফেরত চান",
+                doc2Title: "অভিযোগপত্র",
+                doc2Desc: "বিক্রেতার বিরুদ্ধে আনুষ্ঠানিক অভিযোগ দায়ের করুন",
+                doc3Title: "আইনি নোটিস",
+                doc3Desc: "পদক্ষেপের আগে আইনি নোটিস পাঠান",
+                doc4Title: "কর্তৃপক্ষে রিপোর্ট",
+                doc4Desc: "ভোক্তা অধিকার কর্তৃপক্ষে রিপোর্ট করুন",
+                formTitle: "বিস্তারিত তথ্য পূরণ করুন",
+                label1: "আপনার নাম:",
+                label2: "আপনার ঠিকানা:",
+                label3: "আপনার ফোন:",
+                label4: "বিক্রেতা/দোকানের নাম:",
+                label5: "পণ্য/সেবা:",
+                label6: "ক্রয়ের তারিখ:",
+                label7: "পরিশোধিত টাকা:",
+                label8: "সমস্যার বর্ণনা:",
+                resetBtn: "রিসেট",
+                generateBtn: "নথি তৈরি করুন",
+                docResultTitle: "আপনার নথি প্রস্তুত!",
+                printBtn: "প্রিন্ট",
+                copyBtn: "টেক্সট কপি",
+                downloadBtn: "ডাউনলোড",
+                newBtn: "নতুন তৈরি করুন",
+                backText: "ফিরে যান"
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            const t = translations[currentLanguage];
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = t[key];
+                }
+            });
+        }
+
+        function selectDocument(type) {
+            selectedDocType = type;
+            document.querySelectorAll('.doc-card').forEach(card => card.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            
+            document.getElementById('documentTypes').style.display = 'none';
+            document.getElementById('formSection').style.display = 'block';
+        }
+
+        function resetForm() {
+            document.querySelectorAll('input, textarea').forEach(field => field.value = '');
+        }
+
+        function generateDocument() {
+            const data = {
+                name: document.getElementById('yourName').value,
+                address: document.getElementById('yourAddress').value,
+                phone: document.getElementById('yourPhone').value,
+                shop: document.getElementById('shopName').value,
+                product: document.getElementById('productName').value,
+                date: document.getElementById('purchaseDate').value,
+                amount: document.getElementById('amount').value,
+                problem: document.getElementById('problemDesc').value
+            };
+
+            if (!data.name || !data.shop || !data.product || !data.problem) {
+                alert(currentLanguage === 'english' ? 'Please fill all required fields' : 'সব প্রয়োজনীয় ক্ষেত্র পূরণ করুন');
+                return;
+            }
+
+            const content = generateContent(selectedDocType, data);
+            document.getElementById('documentContent').innerHTML = content;
+            document.getElementById('formSection').style.display = 'none';
+            document.getElementById('generatedDocument').style.display = 'block';
+        }
+
+        function generateContent(type, data) {
+            const today = new Date().toLocaleDateString();
+            
+            if (currentLanguage === 'english') {
+                if (type === 'refund') {
+                    return `
+                        <p style="text-align: right;">Date: ${today}</p>
+                        <p><strong>To,</strong><br>
+                        The Manager/Owner<br>
+                        ${data.shop}</p>
+                        
+                        <p><strong>Subject: Request for Refund</strong></p>
+                        
+                        <p>Dear Sir/Madam,</p>
+                        
+                        <p>I am writing to request a refund for ${data.product} that I purchased from your store on ${data.date} for ${data.amount} Taka.</p>
+                        
+                        <p><strong>Problem:</strong><br>${data.problem}</p>
+                        
+                        <p>According to the Consumer Rights Protection Act 2009, I am entitled to a refund for defective products. I request you to process my refund within 7 days of receiving this letter.</p>
+                        
+                        <p>If the issue is not resolved, I will be forced to file a complaint with the Directorate of National Consumer Rights Protection.</p>
+                        
+                        <p>Thank you for your cooperation.</p>
+                        
+                        <p>Sincerely,<br>
+                        ${data.name}<br>
+                        ${data.address}<br>
+                        Phone: ${data.phone}</p>
+                    `;
+                } else if (type === 'complaint') {
+                    return `
+                        <p style="text-align: center;"><strong>FORMAL COMPLAINT</strong></p>
+                        <p style="text-align: right;">Date: ${today}</p>
+                        
+                        <p><strong>Complainant Details:</strong><br>
+                        Name: ${data.name}<br>
+                        Address: ${data.address}<br>
+                        Phone: ${data.phone}</p>
+                        
+                        <p><strong>Against:</strong><br>
+                        ${data.shop}</p>
+                        
+                        <p><strong>Product/Service:</strong> ${data.product}<br>
+                        <strong>Purchase Date:</strong> ${data.date}<br>
+                        <strong>Amount:</strong> ${data.amount} Taka</p>
+                        
+                        <p><strong>Complaint Details:</strong><br>${data.problem}</p>
+                        
+                        <p>I request the relevant authorities to take necessary action against the seller for violation of consumer rights.</p>
+                        
+                        <p>Signature: _______________<br>
+                        ${data.name}</p>
+                    `;
+                }
+            } else {
+                if (type === 'refund') {
+                    return `
+                        <p style="text-align: right;">তারিখ: ${today}</p>
+                        <p><strong>প্রতি,</strong><br>
+                        ব্যবস্থাপক/মালিক<br>
+                        ${data.shop}</p>
+                        
+                        <p><strong>বিষয়: টাকা ফেরতের জন্য অনুরোধ</strong></p>
+                        
+                        <p>মহোদয়/মহোদয়া,</p>
+                        
+                        <p>আমি ${data.date} তারিখে আপনার দোকান থেকে ${data.amount} টাকায় ক্রয় করা ${data.product} এর জন্য টাকা ফেরতের অনুরোধ জানাচ্ছি।</p>
+                        
+                        <p><strong>সমস্যা:</strong><br>${data.problem}</p>
+                        
+                        <p>ভোক্তা অধিকার সংরক্ষণ আইন ২০০৯ অনুযায়ী, ত্রুটিপূর্ণ পণ্যের জন্য আমি টাকা ফেরত পাওয়ার অধিকারী। আমি এই চিঠি পাওয়ার ৭ দিনের মধ্যে আমার টাকা ফেরত প্রক্রিয়া করার অনুরোধ করছি।</p>
+                        
+                        <p>যদি সমস্যার সমাধান না হয়, আমি জাতীয় ভোক্তা অধিকার সংরক্ষণ অধিদপ্তরে অভিযোগ দায়ের করতে বাধ্য হব।</p>
+                        
+                        <p>আপনার সহযোগিতার জন্য ধন্যবাদ।</p>
+                        
+                        <p>বিনীত,<br>
+                        ${data.name}<br>
+                        ${data.address}<br>
+                        ফোন: ${data.phone}</p>
+                    `;
+                }
+            }
+            
+            return '<p>Document generated successfully!</p>';
+        }
+
+        function printDocument() {
+            window.print();
+        }
+
+        function copyDocument() {
+            const content = document.getElementById('documentContent').innerText;
+            navigator.clipboard.writeText(content).then(() => {
+                alert(currentLanguage === 'english' ? 'Copied to clipboard!' : 'ক্লিপবোর্ডে কপি হয়েছে!');
+            });
+        }
+
+        function downloadDocument() {
+            const content = document.getElementById('documentContent').innerText;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `legal_document_${Date.now()}.txt`;
+            a.click();
+        }
+
+        function createNew() {
+            document.getElementById('generatedDocument').style.display = 'none';
+            document.getElementById('documentTypes').style.display = 'grid';
+            resetForm();
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        updateLanguage();
+    </script>
+</body>
+</html>

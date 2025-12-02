@@ -38,6 +38,7 @@ const translations = {
         detailedQuestionnaire: "Detailed Questionnaire",
         describeProblem: "Describe Problem",
         goBackBtn: "◄ Go Back",
+        documentGenerator:"Document Generator"
         // In english section:
 // voiceStart: "Click microphone to speak",
 // voiceListening: "Listening... Speak now",
@@ -83,6 +84,7 @@ headerTitle: "আইনি অধিকার পরামর্শদাতা"
         detailedQuestionnaire: "বিস্তারিত প্রশ্নমালা",
         describeProblem: "সমস্যার বর্ণনা দিন",
         goBackBtn: "◄ ফিরে যান",
+        documentGenerator:"নথি জেনারেটর",
         // In bangla section:
 // voiceStart: "মাইক্রোফোনে ক্লিক করে কথা বলুন",
 // voiceListening: "শোনা হচ্ছে... এখন কথা বলুন",
@@ -337,26 +339,6 @@ function selectLanguage(language) {
 function updateLanguage() {
     const t = translations[selectedLanguage];
 
-        const voiceStatus = document.getElementById('voiceStatus');
-    if (voiceStatus && !isListening) {
-        voiceStatus.textContent = t.voiceStart;
-    }
-    
-    // Update voice processing text if visible
-    const voiceProcessing = document.getElementById('voiceProcessing');
-    if (voiceProcessing) {
-        voiceProcessing.querySelector('div:last-child').textContent = t.voiceProcessing;
-    }
-    
-    // Update voice suggestions title if visible
-    const voiceSuggestions = document.getElementById('voiceSuggestions');
-    if (voiceSuggestions) {
-        const title = voiceSuggestions.querySelector('div');
-        if (title) {
-            title.textContent = t.voiceSuggestions;
-        }
-    }
-    
     // Always update these elements (they always exist)
     document.getElementById('headerTitle').textContent = t.headerTitle;
     document.getElementById('headerSubtitle').textContent = t.headerSubtitle;
@@ -430,6 +412,10 @@ function updateLanguage() {
             problemText.classList.remove('bangla-text');
         }
     }
+
+    const documentGenerator = document.getElementById('documentGenerator');
+if (documentGenerator) documentGenerator.textContent = t.documentGenerator;
+
 
     
     
@@ -1111,10 +1097,16 @@ function restartAndShowDescription() {
 
 function showComingSoon() {
     document.getElementById("comingSoonModal").style.display = "flex";
+    // window.location.href = 'chatbot.html';
 }
 
 function closeComingSoon() {
     document.getElementById("comingSoonModal").style.display = "none";
+}
+
+
+function openDocGenerator() {
+    window.location.href = 'document-generator.html';
 }
 
 
@@ -1225,3 +1217,4 @@ function exportExcel() {
 
 
 
+// ---------- OCR SCANNER ----------

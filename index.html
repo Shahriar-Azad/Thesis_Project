@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/paddleocr@1.0.7/dist/paddle-ocr.min.js"></script> -->
+
+
+
 
 </head>
 <body>
@@ -58,6 +63,17 @@
         <span>✍️</span> <span id="describeProblemBtn">Describe Problem</span>
     </button>
 
+    <button class="btn primary-btn" onclick="openDocGenerator()">
+    <span>📄</span> <span id="documentGenerator">Document Generator</span>
+</button>
+
+<button class="btn primary-btn" onclick="showComingSoon()">
+    <span>📷</span> <span>Product Scanner (OCR)</span>
+</button>
+
+
+
+
 
     <button class="btn primary-btn" onclick="showComingSoon()">
         <span>🤖</span> <span>Try AI Chatbot</span>
@@ -71,6 +87,22 @@
         <button class="close-modal" onclick="closeComingSoon()">Close</button>
     </div>
 </div>
+
+<!-- OCR Scanner Modal -->
+<!-- <div id="ocrScannerModal" class="modal-overlay">
+    <div class="modal-box ocr-box">
+        <h2>📷 Product Scanner (OCR)</h2>
+        <p>Scan a product label or upload a photo. App will detect text and match relevant laws automatically.</p>
+
+        <input id="ocrInput" type="file" accept="image/*" onchange="processOCR()" />
+
+        <div class="ocr-preview" id="ocrPreview"></div>
+        <pre class="ocr-text" id="ocrText"></pre>
+
+        <button class="btn primary-btn" onclick="matchLawsFromOCR()">Show Related Laws</button>
+        <button class="close-modal" onclick="closeOCRScanner()">Close</button>
+    </div>
+</div> -->
             <!-- Add this after the start-screen div -->
 <div class="problem-description-container">
     <h2 id="problemTitle">Describe Your Problem</h2>
