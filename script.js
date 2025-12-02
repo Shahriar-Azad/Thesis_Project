@@ -690,6 +690,7 @@ if (suggested.length > 0) {
 }
 
             resultContainer.appendChild(lawBox);
+            resultContainer.innerHTML += suggestionHTML;
 
             // Add recommendation section with slight delay for better UX
             setTimeout(() => {
@@ -712,7 +713,7 @@ if (suggested.length > 0) {
                     <div class="law-content">${selectedLanguage === 'english' ? `The predicted law number (${finalLaw}) was not found in our database.` : `পূর্বাভাসিত আইন নম্বর (${toBanglaNumber(finalLaw)}) আমাদের ডাটাবেসে পাওয়া যায়নি।`}</div>
                 </div>
             `;
-            resultContainer.innerHTML += suggestionHTML;
+          
 
         }
 

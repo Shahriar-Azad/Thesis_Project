@@ -58,6 +58,13 @@ class Answers(BaseModel):
 # -------------------------------
 # Prediction Endpoint
 # -------------------------------
+@app.get("/")
+def home():
+    return {"status": "OK", "message": "API is running"}
+
+
+
+
 @app.post("/predict")
 def predict_endpoint(data: Answers):
     answers_dict = data.answers
