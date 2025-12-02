@@ -587,7 +587,7 @@ async function showFinalResult() {
 
     const t = translations[selectedLanguage];
 
-    window.finalLawMatches = matchedLaws; 
+    // window.finalLawMatches = matchedLaws; 
 
 
     // Show a better loading state in the result container
