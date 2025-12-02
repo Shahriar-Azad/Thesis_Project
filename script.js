@@ -647,6 +647,8 @@ async function showFinalResult() {
         }
 
         const finalLaw = data.predicted_law;
+        const suggested = data.suggested_laws || [];
+
 
         // Update UI elements
         document.getElementById('resultTitle').textContent = t.resultTitle;
@@ -666,6 +668,27 @@ async function showFinalResult() {
                 <div class="law-title">${law.title}</div>
                 <div class="law-content">${law.content}</div>
             `;
+
+            let suggestionHTML = "";
+
+if (suggested.length > 0) {
+    suggested.forEach(lawNumber => {
+        const lawInfo = laws[selectedLanguage][lawNumber];
+
+        if (lawInfo) {
+            suggestionHTML += `
+                <div class="law-box" style="border-left: 6px solid #f39c12;">
+                    <div class="law-number">
+                        ${selectedLanguage === 'bangla' ? toBanglaNumber(lawNumber) : lawNumber}
+                    </div>
+                    <div class="law-title">${lawInfo.title}</div>
+                    <div class="law-content">${lawInfo.content}</div>
+                </div>
+            `;
+        }
+    });
+}
+
             resultContainer.appendChild(lawBox);
 
             // Add recommendation section with slight delay for better UX
@@ -689,6 +712,8 @@ async function showFinalResult() {
                     <div class="law-content">${selectedLanguage === 'english' ? `The predicted law number (${finalLaw}) was not found in our database.` : `পূর্বাভাসিত আইন নম্বর (${toBanglaNumber(finalLaw)}) আমাদের ডাটাবেসে পাওয়া যায়নি।`}</div>
                 </div>
             `;
+            resultContainer.innerHTML += suggestionHTML;
+
         }
 
     } catch (error) {
