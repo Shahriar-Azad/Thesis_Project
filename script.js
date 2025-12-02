@@ -678,9 +678,12 @@ if (suggested.length > 0) {
         if (lawInfo) {
             suggestionHTML += `
                 <div class="law-box" style="border-left: 6px solid #f39c12;">
-                    <div class="law-number">
-                        ${selectedLanguage === 'bangla' ? toBanglaNumber(lawNumber) : lawNumber}
-                    </div>
+<div class="law-number">
+    ${selectedLanguage === 'english'
+        ? `Suggested Applicable Law: ${lawNumber}`
+        : `প্রস্তাবিত প্রযোজ্য আইন: ${toBanglaNumber(lawNumber)}`}
+</div>
+
                     <div class="law-title">${lawInfo.title}</div>
                     <div class="law-content">${lawInfo.content}</div>
                 </div>
